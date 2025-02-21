@@ -1,5 +1,4 @@
 key1: /authorized-keys/id_rsa
-passord: "$5$tO/0/WFKNNPH1wNf$2zEiBvU9eFQi7AtuwLuB8p9l/OhdH.0WbmSzH5ep5C5" 
 
 users:
 - frank
