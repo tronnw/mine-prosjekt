@@ -1,0 +1,72 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for fresh_maskin
+    - name: Install packages
+      ansible.builtin.apt:
+        name:
+          - python3-passlib
+          - python3-apt
+          - tree
+          - locate
+          - sudo
+          - makepasswd
+          - lynis
+          - chkrootkit
+        update_cache: true
+
+
+    - name: aurhorized-keys for root
+      copy:
+        src: /authorized-keys/id_rsa.pub
+        dest: /root/.ssh/authorized_keys
+        mode: '644'
+
+    - name: Create a user ansi  with a home directory
+      ansible.builtin.user:
+       name: ansi
+       comment: "Ansible bruker"
+       password: "$5$GjFCD0GkEHyLPHuO$iNk/9b6RZxKnqGa1uX7xog3kT1A/Zdhcr9y3aqA29pD"
+       shell: /bin/bash
+       create_home: yes
+       generate_ssh_key: yes
+       ssh_key_bits: 2048
+       ssh_key_file: .ssh/id_rsa
+       state: present
+
+    - name: Ensure sudo is in order
+      ansible.builtin.lineinfile:
+        path: /etc/sudoers
+        #regexp: '^# User privilege specification'
+        insertafter: '^# User privilege specification'
+        line: 'ansi     ALL=(ALL) PASSWD:ALL'
+        backup: true
+
+    #- name: Legge til noen aliaser
+    #  ansible.builtin.lineinfile:
+    #    path: /home/ansi/.bashrc
+    #    #regexp: '^# User privilege specification'
+    #    insertafter: 'alias ll'
+    #    #line: 'alias \"docker.status\"=\'sudo systemctl status docker\''
+    #    line: 'Her kunne den ha staatt'
+    #    backup: true
+
+    - name: Add serve alias for ansi user
+      lineinfile:
+        path=/home/ansi/.bashrc
+        line="alias "docker.status"='sudo systemctl status docker'"
+        owner=ansi
+        regexp='^alias ll='
+        state=present
+        insertafter=EOF
+        create=True
+
+    - name: Authorized-keys for user Ansi
+      copy:
+        src: /authorized-keys/id_rsa.pub
+        dest: /home/ansi/.ssh/authorized_keys
+        mode: '644'
+
+    - name: Create file in all host nodes
+      file: 
+        path: /home/ansi/hello.txt
+        state: touch
