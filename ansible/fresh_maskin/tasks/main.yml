@@ -71,22 +71,21 @@
         path: /home/ansi/hello.txt
         state: touch
 
-     - name: Ansible check file exists.
-       stat:
-         path: /etc/issue
-       register: p
-     - debug:
-         msg: "File exists..."
-       when: p.stat.exists
-     - debug:
-         msg: "File not found"
-       when: p.stat.exists == False
+    - name: Ansible check file exists.
+      stat:
+        path: /etc/issue
+      register: p
+    - debug:
+        msg: "File exists..."
+      when: p.stat.exists
+    - debug:
+        msg: "File not found"
+      when: p.stat.exists == False
 
-     - name: copy motd file
-       template:
-          src: templates/nybruker_ansi.j2
-          dest: /tmp/motd
-          owner: root
-          group: root
-          mode: 0444
-
+    - name: copy motd file
+      template:
+         src: templates/nybruker_ansi.j2
+         dest: /tmp/motd
+         owner: root
+         group: root
+         mode: 0444
