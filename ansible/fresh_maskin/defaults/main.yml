@@ -1,3 +1,4 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # defaults file for fresh_maskin
+system_manager: admin@linuxexample.com
