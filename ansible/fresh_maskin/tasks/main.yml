@@ -1,6 +1,5 @@
-#SPDX-License-Identifier: MIT-0
 ---
-# tasks file for fresh_maskin
+
     - name: Install packages
       ansible.builtin.apt:
         name:
